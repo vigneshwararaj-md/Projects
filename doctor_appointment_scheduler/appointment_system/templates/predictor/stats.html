@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Predictor Statistics</h2>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Appointments</h5>
+                <h2>{{ total_appointments }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">High Risk Appointments</h5>
+                <h2>{{ high_risk_appointments }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">No-Show Rate</h5>
+                <h2>{{ no_show_rate }}%</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

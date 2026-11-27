@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Patient Profile</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ user.get_full_name|default:user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.patientprofile.phone }}</p>
+                <p><strong>SMS Opt-in:</strong> {{ user.patientprofile.sms_opt_in|yesno:"Yes,No" }}</p>
+                <p><strong>Prior No-shows:</strong> {{ user.patientprofile.prior_no_shows }}</p>
+                <p><strong>Previous Visits:</strong> {{ user.patientprofile.previous_visits }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

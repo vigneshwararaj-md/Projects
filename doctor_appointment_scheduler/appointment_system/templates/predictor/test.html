@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>No-Show Risk Predictor Tester</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label>Age</label>
+                        <input type="number" name="age" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Gender</label>
+                        <select name="gender" class="form-control">
+                            <option>M</option>
+                            <option>F</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Distance (km)</label>
+                        <input type="number" step="0.1" name="distance_km" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Prior No-shows</label>
+                        <input type="number" name="prior_no_shows" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Previous Visits</label>
+                        <input type="number" name="previous_visits" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Appointment Time</label>
+                        <input type="time" name="appointment_time" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Day of Week</label>
+                        <select name="day_of_week" class="form-control">
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                            <option>Wednesday</option>
+                            <option>Thursday</option>
+                            <option>Friday</option>
+                            <option>Saturday</option>
+                            <option>Sunday</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Department</label>
+                        <input type="text" name="department" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Doctor</label>
+                        <input type="text" name="doctor" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Lead Time (days)</label>
+                        <input type="number" name="lead_time_days" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>
+                            <input type="checkbox" name="sms_opt_in"> SMS Opt-in
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Predict Risk</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if risk_result %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3>Prediction Result</h3>
+            </div>
+            <div class="card-body">
+                <h2>Risk Score: <span class="text-danger">{{ risk_result.risk_score }}%</span></h2>
+                <h4>Risk Level: 
+                    <span class="badge risk-{{ risk_result.risk_level|lower }}">
+                        {{ risk_result.risk_level }}
+                    </span>
+                </h4>
+                <p><strong>Recommendation:</strong> {{ risk_result.recommendation }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

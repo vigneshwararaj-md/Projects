@@ -1,0 +1,72 @@
+{% extends 'tutor/base.html' %}
+
+{% block title %}Chat - {{ document.title }}{% endblock %}
+
+{% block content %}
+<div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+            <h2>📄 {{ document.title }}</h2>
+            <a href="{% url 'dashboard' %}" style="color: #667eea; text-decoration: none;">← Back to Dashboard</a>
+        </div>
+    </div>
+    
+    <!-- Chat Messages Area -->
+    <div style="background: #f7f7f7; border-radius: 10px; padding: 20px; min-height: 400px; max-height: 500px; overflow-y: auto; margin-bottom: 20px;" id="chat-container">
+        
+        {% if conversations %}
+            {% for conv in conversations %}
+                <div style="margin-bottom: 20px;">
+                    <!-- User Question -->
+                    <div style="background: white; padding: 10px 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <strong style="color: #667eea;">🙋 You:</strong>
+                        <p style="margin-top: 5px;">{{ conv.question }}</p>
+                    </div>
+                    <!-- AI Answer -->
+                    <div style="background: #667eea; color: white; padding: 10px 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <strong>🤖 AI Tutor:</strong>
+                        <p style="margin-top: 5px;">{{ conv.answer }}</p>
+                    </div>
+                    <small style="color: #999;">{{ conv.created_at|date:"M d, Y H:i" }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; padding: 50px; color: #999;">
+                <p style="font-size: 48px;">📚</p>
+                <p>Ask a question about your study material!</p>
+                <p style="font-size: 14px;">The AI will answer based on the PDF content.</p>
+            </div>
+        {% endif %}
+        
+        <!-- Current Answer (if just asked) -->
+        {% if current_question %}
+            <div style="margin-bottom: 20px;">
+                <div style="background: white; padding: 10px 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <strong style="color: #667eea;">🙋 You:</strong>
+                    <p style="margin-top: 5px;">{{ current_question }}</p>
+                </div>
+                <div style="background: #667eea; color: white; padding: 10px 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <strong>🤖 AI Tutor:</strong>
+                    <p style="margin-top: 5px;">{{ current_answer }}</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Question Input Form -->
+    <form method="POST" style="display: flex; gap: 10px;">
+        {% csrf_token %}
+        <input type="text" name="question" 
+               placeholder="Ask a question about your document..." 
+               required 
+               style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px;">
+        <button type="submit" class="btn" style="padding: 12px 30px;">📤 Send</button>
+    </form>
+</div>
+
+<!-- Auto-scroll to bottom of chat -->
+<script>
+    const chatContainer = document.getElementById('chat-container');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
+{% endblock %}

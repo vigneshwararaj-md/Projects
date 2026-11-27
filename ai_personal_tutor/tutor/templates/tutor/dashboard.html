@@ -1,0 +1,57 @@
+{% extends 'tutor/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+    
+    <!-- Upload Section -->
+    <div>
+        <h2>📤 Upload Study Material</h2>
+        <form method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Title:</label>
+                <input type="text" name="title" required 
+                       placeholder="e.g., Python Handbook"
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">PDF File:</label>
+                <input type="file" name="pdf_file" accept=".pdf" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            <button type="submit" class="btn">🚀 Upload & Start Learning</button>
+        </form>
+    </div>
+    
+    <!-- Documents List -->
+    <div>
+        <h2>📚 Your Study Materials</h2>
+        {% if documents %}
+            <div style="margin-top: 20px;">
+                {% for doc in documents %}
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3>{{ doc.title }}</h3>
+                            <p style="color: #666; font-size: 14px;">
+                                Uploaded: {{ doc.uploaded_at|date:"M d, Y" }}
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <a href="{% url 'chat' doc.id %}" class="btn" style="font-size: 14px;">📖 Study</a>
+                            <a href="{% url 'delete_document' doc.id %}" 
+                               class="btn btn-danger" style="font-size: 14px;"
+                               onclick="return confirm('Delete this document?')">
+                                🗑️ Delete
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #999; margin-top: 20px;">No study materials yet. Upload your first PDF!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

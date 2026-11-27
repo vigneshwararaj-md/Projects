@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3>Cancel Appointment</h3>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to cancel your appointment with 
+                   <strong>{{ appointment.doctor.user.get_full_name }}</strong> on 
+                   <strong>{{ appointment.appointment_date }}</strong> at 
+                   <strong>{{ appointment.appointment_time }}</strong>?
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+                    <a href="/my-appointments/" class="btn btn-secondary">No, Go Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

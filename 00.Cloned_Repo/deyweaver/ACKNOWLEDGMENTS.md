@@ -1,2 +1,0 @@
-- Thanks @anasoftwareus for contributing!
-- Thanks @NolanSoo for contributing!
